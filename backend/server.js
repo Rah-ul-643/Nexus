@@ -1,9 +1,7 @@
-const express = require('express');
-const cors = require('cors');
 const server = require('http').createServer();
 const { Server } = require('socket.io');
 
-const PORT = 4000;
+const PORT = process.env.PORT || 4000;
 const CLIENT_URL = process.env.CLIENT_URL;
 
 const io = new Server(server, {
