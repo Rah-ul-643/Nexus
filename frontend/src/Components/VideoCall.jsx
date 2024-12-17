@@ -200,41 +200,43 @@ const VideoCall = () => {
                 </div>
             }
             {!isLoading &&
-                <div className="bg-white shadow-2xl rounded-2xl p-6 w-full max-w-6xl">
-                    <div className="flex justify-between items-center mb-4">
+                <div className="bg-white shadow-2xl rounded-2xl p-4 sm:p-6 w-full max-w-6xl">
+                    {/* Header - Made more compact and responsive */}
+                    <div className="flex flex-col sm:flex-row justify-between items-center mb-4 space-y-2 sm:space-y-0">
                         <div className="flex items-center space-x-4">
-                            <Camera className="text-purple-600" size={32} />
-                            <h2 className="text-2xl font-bold text-gray-800">Nexus</h2>
+                            <Camera className="text-purple-600" size={24} />
+                            <h2 className="text-xl sm:text-2xl font-bold text-gray-800">Nexus</h2>
                         </div>
                         <div className="flex items-center space-x-2">
-                            <span className="text-sm text-gray-600">Your ID: {myId}</span>
+                            <span className="text-xs sm:text-sm text-gray-600 truncate max-w-[150px]">Your ID: {myId}</span>
                             <button
                                 onClick={copyPeerId}
                                 className="text-purple-600 hover:bg-purple-100 p-2 rounded-full transition-colors"
                             >
-                                {isCopied ? <Check size={20} /> : <Copy size={20} />}
+                                {isCopied ? <Check size={16} /> : <Copy size={16} />}
                             </button>
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-12 gap-4">
-                        <div className="col-span-8 relative">
-                            {/* Remote Video (Main Screen) */}
+                    {/* Grid Layout - Stacked on mobile, side-by-side on larger screens */}
+                    <div className="flex flex-col md:grid md:grid-cols-12 gap-4">
+                        {/* Remote Video - Full width on mobile, 2/3 on larger screens */}
+                        <div className="w-full md:col-span-8 relative">
                             <video
                                 ref={remoteVideoComponent}
                                 autoPlay
-                                className={`w-full h-[500px] object-cover rounded-xl shadow-lg transition-all duration-300 ${callState.isConnected ? 'opacity-100' : 'opacity-20'}`}
+                                className={`w-full h-[250px] sm:h-[400px] md:h-[500px] object-cover rounded-xl shadow-lg transition-all duration-300 ${callState.isConnected ? 'opacity-100' : 'opacity-20'}`}
                                 title='Remote Video'
                             />
                             {!callState.isConnected && (
                                 <div className="absolute inset-0 flex items-center justify-center bg-gray-100/50 rounded-xl">
-                                    <p className="text-gray-500 text-xl">Start a call to view your friend's video here. </p>
+                                    <p className="text-gray-500 text-sm sm:text-xl text-center">Start a call to view your friend's video here.</p>
                                 </div>
                             )}
                         </div>
 
-                        <div className="col-span-4 flex flex-col justify-evenly space-y-4 h-full">
-
+                        {/* Controls and My Video - Full width on mobile, 1/3 on larger screens */}
+                        <div className="w-full md:col-span-4 flex flex-col space-y-4">
                             {/* Connection Controls */}
                             <div className="space-y-3">
                                 <input
@@ -242,18 +244,18 @@ const VideoCall = () => {
                                     placeholder="Enter friend's ID to call"
                                     value={inputUserId}
                                     onChange={handleInputChange}
-                                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                    className="w-full px-3 py-2 sm:px-4 sm:py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                                 />
                                 <div className="flex space-x-2">
                                     <button
                                         onClick={() => callUser(inputUserId)}
-                                        className={`flex-1 py-2 rounded-lg transition-colors flex items-center justify-center space-x-2 ${callState.isConnected
+                                        className={`flex-1 py-2 rounded-lg transition-colors flex items-center justify-center space-x-2 text-sm sm:text-base ${callState.isConnected
                                                 ? "bg-gray-400 text-gray-600 cursor-not-allowed"
                                                 : "bg-purple-600 text-white hover:bg-purple-700"
                                             }`}
                                         disabled={callState.isConnected}
                                     >
-                                        <PhoneIncoming size={20} />
+                                        <PhoneIncoming size={16} />
                                         <span>Call</span>
                                     </button>
                                     {callState.isConnected && (
@@ -261,12 +263,13 @@ const VideoCall = () => {
                                             onClick={endCall}
                                             className="bg-red-500 text-white p-2 rounded-lg hover:bg-red-600 transition-colors"
                                         >
-                                            <PhoneOff size={20} />
+                                            <PhoneOff size={16} />
                                         </button>
                                     )}
                                 </div>
                             </div>
-                            {/* My Video (Small Corner) */}
+
+                            {/* My Video - Smaller and responsive */}
                             <div className="relative">
                                 <video
                                     ref={myVideoComponent}
